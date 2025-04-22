@@ -1,0 +1,431 @@
+:root {
+    --red: #EE3636;
+    --black: #353535;
+    --dark: #222;
+    --Lgray: #54595F;
+    --gray: #363636;
+    --desc: #7a7a7a;
+}
+
+header {
+    background-color: var(--red);
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+}
+
+header a svg {
+    width: 24px;
+    fill: #69727d;
+}
+
+header a {
+    text-decoration: unset;
+    color: #54595F;
+    font-weight: bold;
+}
+
+header a .e-fas-comment-dots {
+    fill: #222;
+}
+
+header .headerBtn {
+    display: flex;
+    gap: 24px;
+    width: 30%;
+}
+
+header .d-flex img {
+    width: 114px;
+}
+
+#timer {
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    width: 40%;
+}
+
+.timer {
+    background-color: #222;
+    color: white;
+    text-align: center;
+    padding: 2px 8px;
+    align-items: center;
+    flex: 1;
+}
+
+.timer .time {
+    font-size: 40px;
+}
+
+.timer .timeLabel {
+    font-size: 15px;
+    text-transform: capitalize;
+}
+
+.timerTitle {
+    color: #222;
+    font-weight: bold;
+    font-size: 18px;
+    min-width: 85px;
+}
+
+.hero {
+    background-image: url("../images/photo.webp");
+    height: 76vh;
+    max-height: 600px;
+    background-repeat: repeat-x;
+    background-size: contain;
+    background-size: 400px;
+}
+
+.title {
+    font-size: 52px;
+    color: #EE3636;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 24px;
+}
+
+.sub-title {
+    font-size: 46px;
+    color: #EE3636;
+    font-weight: bold;
+    padding-top: 24px;
+}
+
+.sub-title.black {
+    color: #222;
+}
+
+.headDesc {
+    font-size: 24px;
+    text-align: center;
+    color: #353535;
+}
+
+.tent {
+    background-color: white;
+    border-radius: 99999999%;
+    height: 100%;
+    width: 140%;
+    position: relative;
+    left: 20%;
+}
+
+.tent img {
+    min-width: 600px;
+    max-width: 690px;
+    margin: 24px auto 0;
+    display: block;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    width: 60%;
+}
+
+.bluch-container {
+    padding-top: 40px;
+    flex-direction: column;
+    display: flex;
+    gap: 24px;
+}
+
+.bluch {
+    font-size: 28px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border: 3px solid rgba(142, 163, 152, 0.19);
+    border-radius: 10px;
+}
+
+.bluch svg {
+    width: 24px;
+    fill: #61CE70;
+}
+
+.overflow {
+    overflow-x: hidden;
+    margin-top: -20vh;
+}
+
+.bg-red {
+    background-image: linear-gradient(0deg, #EE3636 50%, transparent 50%);
+}
+
+.black {
+    color: #222;
+}
+
+.swiper-slide img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.swiper {
+    padding-bottom: 32px;
+}
+
+.swiper-horizontal>.swiper-pagination-bullets,
+.swiper-pagination-bullets.swiper-pagination-horizontal,
+.swiper-pagination-custom,
+.swiper-pagination-fraction {
+    bottom: 0;
+    top: unset;
+}
+
+.swiper-pagination-bullet.swiper-pagination-bullet-active {
+    background-color: #222;
+}
+
+.fruits {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.fruits p {
+    font-size: 32px;
+}
+
+.red {
+    background-color: #EE3636;
+}
+.swiper.arrows{
+    padding: 0 25px 32px;
+}
+
+.swiper.arrows .swiper-button-next {
+    height: 100%;
+    top: 0;
+    transform: unset;
+    bottom: unset;
+    margin-top: unset;
+    left: 0;
+    right: unset;
+    background-color: red;
+    justify-content: left;
+}
+
+.swiper.arrows .swiper-button-next:after,
+.swiper.arrows .swiper-button-prev:after {
+    width: fit-content;
+    font-size: 25px;
+    color: white;
+    fill: white;
+}
+
+.swiper.arrows .swiper-button-prev {
+    justify-content: right;
+    height: 100%;
+    top: 0;
+    transform: unset;
+    bottom: unset;
+    margin-top: unset;
+    right: 0;
+    left: unset;
+    background-color: red;
+}
+iframe{
+    aspect-ratio: 9/16;
+}
+.products{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+}
+.products .product{
+    text-align: center;
+}
+.products .product img{
+    width: 100%;
+}
+.products .product .btn{
+    background-color: #EE3636;
+    color: white;
+}
+.products .product .price{
+    font-size: 13px;
+    font-weight: 600;
+    color: #EE3636;
+    margin-bottom: 24px;
+}
+.products .product .name{
+    margin-top: 24px;
+    font-size: 32px;
+    margin-bottom: 24px;
+}
+.products .product p{
+    font-size: 16px;
+    color: #7a7a7a;
+    font-weight: bold;
+    margin-bottom: 24px;
+}
+
+.offers h3{
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+.offers a{
+    text-decoration: unset;
+    color: #222;
+    font-size: 22px;
+    display: block;
+    font-weight: bold;
+}
+.offers p{
+    color: #7a7a7a;
+    font-size: 18px;
+}
+.copyright{
+    font-size: 18px;
+    color: #54595F;
+    font-weight: bold;
+}
+@media only screen and (max-width: 991px) {
+    header .d-flex img {
+        width: 20vw;
+        max-width: 114px;
+    }
+
+    .timerTitle {
+        font-size: 16px;
+    }
+
+    header .headerBtn {
+        display: flex;
+        gap: 24px;
+        width: 154px;
+    }
+
+    #timer {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        width: fit-content;
+    }
+
+    .timer .time {
+        font-size: 24px;
+    }
+
+    .timer .timeLabel {
+        font-size: 12px;
+        text-transform: capitalize;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .products{
+        grid-template-columns: 1fr 1fr;
+    }    
+    .swiper.arrows{
+        padding: 0 18px 32px;
+    }
+    .fruits {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 0;
+    }
+
+    .fruits p {
+        font-size: 42px;
+        margin-bottom: 2px;
+    }
+
+    .bluch {
+        font-size: 16px;
+    }
+
+    .bg-red {
+        background-image: linear-gradient(0deg, #EE3636 75%, transparent 20%);
+    }
+
+    .overflow {
+        overflow-x: hidden;
+        margin-top: -20%;
+        height: 400px;
+    }
+
+    .tent img {
+        max-width: 200px;
+        margin: 24px auto 0;
+        display: block;
+        min-width: unset;
+    }
+
+    .headDesc {
+        font-size: 19px;
+    }
+
+    .title {
+        font-size: 42px;
+    }
+
+    .sub-title {
+        font-size: 36px;
+    }
+
+    #timer {
+        flex-direction: column;
+    }
+
+    header a svg {
+        width: 16px;
+    }
+
+    header .headerBtn {
+        gap: 8px;
+    }
+
+    header a span {
+        font-size: 12px;
+    }
+
+    .hero {
+        background-size: cover;
+    }
+
+    .swiper.arrows .swiper-button-next:after,
+    .swiper.arrows .swiper-button-prev:after {
+        width: fit-content;
+        font-size: 12px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .products{
+        grid-template-columns: 1fr;
+    } 
+    .timerTitle {
+        font-size: 12px;
+    }
+
+    #timer {
+        gap: 4px;
+    }
+
+    .timer .time {
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    .timer .timeLabel {
+        font-size: 10px;
+        text-transform: capitalize;
+    }
+
+    #timer .d-flex {
+        gap: 2px !important;
+    }
+
+    header {
+        padding: 8px 0;
+    }
+
+    .timer {
+        padding: 2px 4px;
+    }
+}
