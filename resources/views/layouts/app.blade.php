@@ -21,7 +21,7 @@
     @if(View::hasSection('focus_keywords'))
         <meta name="news_keywords" content="@yield('focus_keywords')">
         @endif
-        
+
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="{{ asset('website/assets/css/bootstrap.min.css') }}">
         <link rel="stylesheet" href="{{ asset('website/assets/css/fontawesome.min.css') }}">
@@ -66,6 +66,9 @@
     <!-- CSS Files -->
 
     <style>
+        body {
+            background-color: #edede4 !important;
+        }
         .notification-container {
             position: fixed;
             top: 20px;
@@ -195,7 +198,7 @@
 <script>
     const arabicNames = [
         'سارة', 'فاطمة', 'منة', 'ليلى', 'جنى', 'دعاء', 'زينب', 'ياسمين',
-        'شيماء', 'نور', 'أمل', 'رنا', 'ميساء', 'هند', 'دينا', 'رغدة', 
+        'شيماء', 'نور', 'أمل', 'رنا', 'ميساء', 'هند', 'دينا', 'رغدة',
         'عائشة', 'عبير', 'مروة', 'جواهر', 'نورا', 'لميس', 'شروق', 'هالة',
         'رغد', 'رهف', 'مريم', 'سندس', 'شذى', 'هالة', 'ندى'
     ];
@@ -242,14 +245,14 @@
 </script>
 
     @yield('styles')
-    
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    
+
     <!-- Custom JS -->
     <script src="{{ asset('website/js/product-actions.js') }}" defer></script>
 </head>
@@ -377,7 +380,7 @@
             const container = document.getElementById('notificationContainer');
             const notification = createNotification(data);
             container.appendChild(notification);
-            
+
             // Trigger animation
             setTimeout(() => {
                 notification.classList.add('show');

@@ -47,6 +47,25 @@ class HomeSetting extends Model implements HasMedia
         'review_count' => 'integer',
     ];
 
+//    protected static function booted(): void
+//    {
+//        parent::booted();
+//
+//        static::saved(function ($model) {
+//            // This will run after the model is saved
+//            $updated = collect($model->feature_items)->map(function ($item, $index) use ($model) {
+//                $media = $model->getMedia('feature_icons')[$index] ?? null;
+//                if ($media) {
+//                    $item['icon_url'] = $media->getUrl();
+//                }
+//                return $item;
+//            });
+//
+//            // Update the model after modifying the feature items
+//            $model->update(['feature_items' => $updated]);
+//        });
+//    }
+
     public function registerMediaCollections(): void
     {
         // Hero Section Images
@@ -56,7 +75,7 @@ class HomeSetting extends Model implements HasMedia
             ->singleFile();
         $this->addMediaCollection('hero_bg_2')
             ->singleFile();
-        
+
         // Features Section Images
         $this->addMediaCollection('features_main_image')
             ->singleFile();
@@ -73,7 +92,7 @@ class HomeSetting extends Model implements HasMedia
         // Newsletter Section Images
         $this->addMediaCollection('newsletter_image')
             ->singleFile();
-            
+
         // Testimonial Images
         $this->addMediaCollection('testimonial_image')
             ->singleFile();

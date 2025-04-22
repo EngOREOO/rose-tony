@@ -7,12 +7,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
-    
+
     <script>
         fbq('init', '{{ env('FACEBOOK_PIXEL_ID') }}');
     </script>
-
-
 
     <script>
         !function(f,b,e,v,n,t,s)
@@ -30,8 +28,8 @@
         <img height="1" width="1" style="display:none"
              src="https://www.facebook.com/tr?id=551745431056767&ev=PageView&noscript=1"/>
     </noscript>
-    
-    
+
+
     <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
     <title>Rosmary Organic</title>
     <style>
@@ -39,30 +37,30 @@
         text-align: center;
         padding: 8px;
         border-radius: 6px;
-        background: transparent; 
+        background: transparent;
         color: #333;
-        font-size: 16px; 
+        font-size: 16px;
         font-weight: bold;
-        border: 1.5px solid #ddd; 
+        border: 1.5px solid #ddd;
         min-width: 60px;
     }
-    
+
     .time {
-        font-size: 20px; 
+        font-size: 20px;
         font-weight: bold;
         color: white;
-        text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.5); 
+        text-shadow: 1.5px 1.5px 3px rgba(0, 0, 0, 0.5);
     }
-    
+
     .timerTitle {
-        font-size: 14px; 
+        font-size: 14px;
         font-weight: bold;
         color: white;
     }
-    
+
     .timeLabel {
-        font-size: 12px; 
-        color: #777; 
+        font-size: 12px;
+        color: #777;
     }
 
     /* تصغير الحجم أكثر على شاشات الموبايل */
@@ -73,15 +71,15 @@
             padding: 3px;
             border-radius: 4px;
         }
-        
+
         .time {
             font-size: 12px;
         }
-        
+
         .timerTitle {
             font-size: 10px;
         }
-        
+
         .timeLabel {
             font-size: 8px;
         }
@@ -164,10 +162,10 @@ document.getElementById('overlay').addEventListener('click', function() {
 // Function to add product to cart
 function addToCart(productId, productName, productPrice, productImage) {
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
+
     // Check if product is already in the cart
     let productIndex = cart.findIndex(item => item.id === productId);
-    
+
     if (productIndex > -1) {
         // If product is already in the cart, increase its quantity
         cart[productIndex].quantity += 1;
@@ -199,9 +197,9 @@ function addToCart(productId, productName, productPrice, productImage) {
 function updateCart() {
     const cartItems = document.getElementById('cartItems');
     const cartTotal = document.getElementById('cartTotal');
-    
+
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    
+
     cartItems.innerHTML = '';
     let total = 0;
 
@@ -779,8 +777,8 @@ document.addEventListener('DOMContentLoaded', updateCart);
                         allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share">
                 </iframe>
             </div>
-            
-            
+
+
 
         </div>
     </section>
@@ -838,19 +836,19 @@ document.addEventListener('DOMContentLoaded', updateCart);
         @foreach ($products->where('category_id', null) as $product)
             <div class="product" style="border: 1px solid #ddd; padding: 15px; border-radius: 10px; text-align: center; position: relative;">
                 @if($product->hasMedia('product_images'))
-                    <img src="{{ asset('storage/' . $product->getFirstMedia('product_images')->id . '/' . $product->getFirstMedia('product_images')->file_name) }}" 
-                         alt="{{ $product->name }}" 
+                    <img src="{{ asset('storage/' . $product->getFirstMedia('product_images')->id . '/' . $product->getFirstMedia('product_images')->file_name) }}"
+                         alt="{{ $product->name }}"
                          style="width: 100%; border-radius: 10px;">
                 @else
-                    <img src="{{ asset('assets/images/911111.webp') }}" 
-                         alt="{{ $product->name }}" 
+                    <img src="{{ asset('assets/images/911111.webp') }}"
+                         alt="{{ $product->name }}"
                          style="width: 100%; border-radius: 10px;">
                 @endif
-    
+
                 <h2 class="name" style="margin-top: 10px; font-size: 22px; font-weight: bold;">
                     {{ $product->name }}
                 </h2>
-    
+
                 @php
                     if ($product->price <= 65) {
                         $oldPrice = 80;
@@ -861,22 +859,22 @@ document.addEventListener('DOMContentLoaded', updateCart);
                     }
                     $discountPercentage = round((($oldPrice - $product->price) / $oldPrice) * 100);
                 @endphp
-    
+
                 <div style="position: absolute; top: 10px; left: 10px; background: green; color: white; padding: 5px 10px; border-radius: 5px; font-size: 14px;">
                     خصم {{ $discountPercentage }}% 🔥
                 </div>
-    
+
                 <h2 class="price" style="color: red; font-size: 28px; font-weight: bold; margin: 10px 0;">
                     {{ $product->price }} ج.م
                 </h2>
                 <h3 class="old-price" style="text-decoration: line-through; color: gray; font-size: 18px; margin-bottom: 10px;">
                     {{ $oldPrice }} ج.م
                 </h3>
-    
+
                 <p style="color: #555;">{!! nl2br(e($product->description)) !!}</p>
-    
-                <a href="javascript:void(0);" 
-                   onclick="buyNow({{ $product->id }}, '{{ $product->name }}', {{ $product->price }}, '{{ $product->image_url }}')" 
+
+                <a href="javascript:void(0);"
+                   onclick="buyNow({{ $product->id }}, '{{ $product->name }}', {{ $product->price }}, '{{ $product->image_url }}')"
                    class="buy-btn">
                     🛒 أشتري الآن
                 </a>
@@ -927,7 +925,7 @@ document.addEventListener('DOMContentLoaded', updateCart);
     <footer>
     <div class="container">
         <div class="copyright text-start py-3">
-            All Right reserved by 
+            All Right reserved by
             <a href="https://creatious.online/" target="_blank" rel="noopener noreferrer">
                 Creatious Marketing Agency
             </a>

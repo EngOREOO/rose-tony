@@ -189,7 +189,6 @@ p {
                     <div class="logo-container">
                         <img src="{{ asset('/assets2/images/logo.webp') }}" alt="Rosemary Cosmetics Logo">
                     </div>
-
                         <h1>Rosemary Cosmetics</h1>
                     </div>
 

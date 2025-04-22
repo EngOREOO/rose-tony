@@ -1,9 +1,9 @@
 @charset "UTF-8";
 /*
 Template Name: Erna
-Template URL: https://themeforest.net/user/themeholy/erna/  
+Template URL: https://themeforest.net/user/themeholy/erna/
 Description: Erna Multi-Purpose Modern & Minimal WooCommerce Template
-Author: themeholy 
+Author: themeholy
 Author URI: https://themeforest.net/user/themeholy
 Version: 1.0.0
 */
@@ -35,7 +35,7 @@ Version: 1.0.0
     3.8. Text Color
     3.9. Overlay
     3.10. Animation
-    
+
 04. Template Style
     4.1. Widget
     4.2. Header
@@ -45,7 +45,7 @@ Version: 1.0.0
     4.6. Blog
     4.7. Comments
     4.8. Hero Area
-    4.9. Error    
+    4.9. Error
     4.00. Popup Search
     4.00. Popup Side Menu
     4.00. Wocommerce
@@ -17741,7 +17741,7 @@ table.variations .label,
 
 .product-grid.style10 {
   position: relative;
-  background-color: #F0EBE7;
+  background-color: #eeeeee !important;
   border-radius: 24px;
   -webkit-transition: all 0.4s ease-in-out;
   transition: all 0.4s ease-in-out;

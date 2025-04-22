@@ -39,7 +39,7 @@ Hero Area
                         <h1 class="hero-title">{{ $homeSettings->hero_title ?? 'روزماري لمستحضرات التجميل الطبيعية' }}</h1>
                         <p class="hero-text">{{ $homeSettings->hero_description ?? 'اكتشفي جمالك الطبيعي مع مجموعة منتجاتنا المميزة من مستحضرات التجميل الطبيعية' }}</p>
                         <div class="btn-group justify-content-center">
-                          
+
                             <a href="{{ route('shop.index') }}" class="th-btn black-border">تسوق الآن</a>
 
                         </div>
@@ -67,7 +67,7 @@ Hero Area
         </div>
     </div>
     <!--======== / Hero Section ========--><!--==============================
-Counter Area  
+Counter Area
 ==============================-->
 <div class="space">
     <div class="container th-container4">
@@ -139,7 +139,7 @@ Product Area
                         <a href="{{ route('shop.product', $product->slug) }}">{{ $product->name }}</a>
                     </h3>
                     <span class="box-price">
-                        {{ number_format($product->price_after ?? $product->price, 2) }} 
+                        {{ number_format($product->price_after ?? $product->price, 2) }}
                         @if($product->discounted_price)
                             <del>{{ number_format($product->discounted_price, 2) }}</del>
                         @endif
@@ -220,7 +220,7 @@ Product Area
         </div>
     </section>
     <!--==============================
-Feature Area  
+Feature Area
 ==============================-->
     <div class="choose-area overflow-hidden space overflow-hidden" id="feature-sec">
         <div class="shape-mockup spin d-none d-xl-block" data-top="11%" data-left="10%"><img src="assets/img/shape/shape-14.png" alt="shape"></div>
@@ -230,38 +230,22 @@ Feature Area
                 <div class="col-lg-6">
                     <div class="">
                         <div class="title-area">
-                            <span class="sub-title">Benefits of Coffee</span>
-                            <h2 class="sec-title sec-title2 style1 fw-medium">The benefits of coffee mate?</h2>
+                            <span class="sub-title">{{ $homeSettings->features_subtitle }}</span>
+                            <h2 class="sec-title sec-title2 style1 fw-medium">{{ $homeSettings->features_title}}</h2>
 
                         </div>
                         <div class="choose-about-wrap">
-                            <div class="choose-about wow fadeInUp">
-                                <div class="choose-about_icon">
-                                    <img src="{{ asset('website/assets/img/icon/choose_1.svg') }}" alt="image">
+                            @foreach($homeSettings->feature_items as $feature_item)
+                                <div class="choose-about wow fadeInUp">
+                                    <div class="choose-about_icon">
+                                        <img src="{{ asset('storage/assets/img/' . $feature_item['icon']) }}" alt="image">
+                                    </div>
+                                    <div class="media-body">
+                                        <h3 class="box-title">{{ $feature_item['title'] }}</h3>
+                                        <p class="choose-about_text">{{ $feature_item['description'] }}</p>
+                                    </div>
                                 </div>
-                                <div class="media-body">
-                                    <h3 class="box-title">Stimulates your mind</h3>
-                                    <p class="choose-about_text">Put your brain in focus mode: yerba mate infusion can help stimulate brain activity thanks to the natural presence of polyphenols. The end of your sessions will be much more productive.</p>
-                                </div>
-                            </div>
-                            <div class="choose-about wow fadeInUp">
-                                <div class="choose-about_icon">
-                                    <img src="{{ asset('website/assets/img/icon/choose_2.svg') }}" alt="image">
-                                </div>
-                                <div class="media-body">
-                                    <h3 class="box-title">Delivers instant energy</h3>
-                                    <p class="choose-about_text">Put your brain in focus mode: yerba mate infusion can help stimulate brain activity thanks to the natural presence of polyphenols. The end of your sessions will be much more productive.</p>
-                                </div>
-                            </div>
-                            <div class="choose-about wow fadeInUp">
-                                <div class="choose-about_icon">
-                                    <img src="{{ asset('website/assets/img/icon/choose_3.svg') }}" alt="image">
-                                </div>
-                                <div class="media-body">
-                                    <h3 class="box-title">Contains less antioxidants</h3>
-                                    <p class="choose-about_text">Put your brain in focus mode: yerba mate infusion can help stimulate brain activity thanks to the natural presence of polyphenols. The end of your sessions will be much more productive.</p>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -277,15 +261,15 @@ Feature Area
         </div>
     </div>
 <!--==============================
-Video Area  
+Video Area
 ==============================-->
-    <div class="video-area overflow-hidden" data-bg-src="assets/img/bg/video_1.jpg">
+    <div class="video-area overflow-hidden" data-bg-src="{{ $homeSettings->getFirstMediaUrl("video_bg") }}">
         <div class="container">
             <div class="video-content1">
                 <a href="https://www.youtube.com/watch?v=_sI_Ps7JSEk" class="play-btn style3 popup-video"><i class="fa-sharp fa-solid fa-play"></i></a>
             </div>
         </div>
-    </div> 
+    </div>
 <!--==============================
 Product Area
 ==============================-->
@@ -294,9 +278,9 @@ Product Area
         <div class="shape-mockup movingX d-none d-xl-block" data-top="25%" data-right="2%"><img src="assets/img/shape/shape-11.png" alt="shape"></div>
         <div class="container th-container4">
             <div class="title-area text-center mb-30">
-                <span class="sub-title style2">Special Products</span>
-                <h2 class="sec-title style1 sec-title2 fw-medium">Weekend Special Products</h2>
-                <p class="sec-text4">Checkout our daily special products that you can get with 25% off</p>
+                <span class="sub-title style2">{{ $homeSettings->products_subtitle }}</span>
+                <h2 class="sec-title style1 sec-title2 fw-medium">{{ $homeSettings->products_title }}</h2>
+                <p class="sec-text4">{{ $homeSettings->products_description }}</p>
             </div>
 
             <div class="nav tab-menu style3 indicator-active justify-content-center mb-45" id="tab-menu1" role="tablist">
@@ -1114,7 +1098,7 @@ Product Area
             </div>
         </div>
     </section><!--==============================
-Testimonial Area  
+Testimonial Area
 ==============================-->
     <section class="overflow-hidden overflow-hidden" id="testi-sec">
         <div class="container-fiuld">
@@ -1187,7 +1171,7 @@ Testimonial Area
             </div>
         </div>
     </section><!--==============================
-About Area  
+About Area
 ==============================-->
     <div class="overflow-hidden space" id="about-sec">
         <div class="shape-mockup spin d-none d-xl-block" data-top="11%" data-right="10%"><img src="assets/img/shape/shape-14.png" alt="shape"></div>
@@ -1268,7 +1252,7 @@ About Area
             </div>
         </div>
     </div><!--==============================
-Brand Area  
+Brand Area
 ==============================-->
     <div class="brand-area " data-bg-src="assets/img/bg/brand_bg_1.jpg">
         <div class="container th-container">
@@ -1535,7 +1519,7 @@ Faq Area
             </div>
         </div>
     </div><!--==============================
-Blog Area  
+Blog Area
 ==============================-->
     <section class="space-top" id="blog-sec">
         <div class="container th-container4">
@@ -1590,17 +1574,17 @@ Blog Area
             </div>
         </div>
     </section><!--==============================
-newsletter Area  
+newsletter Area
 ==============================-->
     <div class="newsletter-area3 overflow-hidden space">
         <div class="shape-mockup jump d-none d-xl-block" data-bottom="3%" data-left="0%"><img src="{{ asset('website/assets/img/shape/shape-16.png') }}" alt="shape"></div>
         <div class="shape-mockup jump d-none d-xl-block" data-top="5%" data-right="0%"><img src="{{ asset('assets/img/shape/shape-15.png') }}" alt="shape"></div>
         <div class="container th-container4">
-            <diV class="newsletter-sec bg-title" data-bg-src="{{ asset('website/assets/img/bg/newsletter_bg_2.png') }}">
+            <diV class="newsletter-sec bg-title" data-bg-src="{{ asset($homeSettings->getFirstMediaUrl("newsletter_image")) }}">
                 <div class="newsletter-content2">
-                    <span class="sub-title text-white">Daily Updates</span>
-                    <h3 class="sec-title2 text-white fw-medium">Subscribe to our newsletter and receive 10$ off your
-                        first subscription order.
+                    <span class="sub-title text-white">{{ $homeSettings->newsletter_title }}</span>
+                    <h3 class="sec-title2 text-white fw-medium">
+                        {{ $homeSettings->newsletter_description }}
                     </h3>
                     <form class="newsletter-form style2">
                         <div class="form-group">
@@ -1763,7 +1747,7 @@ newsletter Area
     </footer>
 
     <!--********************************
-			Code End  Here 
+			Code End  Here
 	******************************** -->
 
     <!-- Scroll To Top -->
@@ -1775,7 +1759,7 @@ newsletter Area
     </div>
 
     <!--==============================
-modal Area  
+modal Area
 ==============================-->
     <div id="login-form" class="popup-login-register mfp-hide">
         <ul class="nav" id="pills-tab" role="tablist">
@@ -1851,6 +1835,7 @@ modal Area
     </div><!--==============================
     All Js File
 ============================== -->
+
     <!-- Jquery -->
     <script src="{{ asset('website/assets/js/vendor/jquery-3.7.1.min.js') }}"></script>
 <!-- Swiper Js -->

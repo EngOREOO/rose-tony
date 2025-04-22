@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\HomeSettingResource\Pages;
 use App\Models\HomeSetting;
 use Filament\Forms;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -62,7 +63,7 @@ class HomeSettingResource extends Resource
                                 //         ->label('رابط الزر الثاني'),
                                 // ]),
                             ]),
-                            
+
                         Forms\Components\Tabs\Tab::make('Counter Section')
                             ->schema([
                                 Forms\Components\TextInput::make('counter_title')
@@ -88,7 +89,7 @@ class HomeSettingResource extends Resource
                                     ->label('عدد المنتجات')
                                     ,
                             ]),
-                            
+
                         Forms\Components\Tabs\Tab::make('Features Section')
                             ->schema([
                                 Forms\Components\Grid::make(2)->schema([
@@ -118,15 +119,17 @@ class HomeSettingResource extends Resource
                                         Forms\Components\Textarea::make('description')
                                             ->label('وصف الميزة')
                                             ,
-                                        Forms\Components\SpatieMediaLibraryFileUpload::make('icon')
-                                            ->collection('feature_icons')
+                                        FileUpload::make('icon')
+                                            ->disk('public') // or your disk
+                                            ->directory('feature-icons')
+                                            ->image()
                                             ->label('أيقونة الميزة'),
                                     ])
                                     ->label('المميزات')
                                     ->defaultItems(3)
                                     ->collapsible(),
                             ]),
-                            
+
                         Forms\Components\Tabs\Tab::make('Products Section')
                             ->schema([
                                 Forms\Components\TextInput::make('products_subtitle')
@@ -139,7 +142,7 @@ class HomeSettingResource extends Resource
                                     ->label('وصف قسم المنتجات')
                                     ,
                             ]),
-                            
+
                         Forms\Components\Tabs\Tab::make('Video Section')
                             ->schema([
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('video_bg')
@@ -149,18 +152,22 @@ class HomeSettingResource extends Resource
                                     ->label('رابط الفيديو')
                                     ->url(),
                             ]),
-                            
+
                         Forms\Components\Tabs\Tab::make('Newsletter Section')
                             ->schema([
                                 Forms\Components\SpatieMediaLibraryFileUpload::make('promo_image')
+                                    ->collection('newsletter_image')
                                     ->label('الصوره الترويجيه')
                                     ,
                                 Forms\Components\TextInput::make('promo_url')
                                     ->label('رابط الصوره')
                                     ,
-                                // Forms\Components\Textarea::make('newsletter_description')
-                                //     ->label('وصف النشرة البريدية')
-                                //     ,
+                                Forms\Components\TextInput::make('newsletter_title')
+                                     ->label('عنوان النشرة البريدية')
+                                     ,
+                                Forms\Components\Textarea::make('newsletter_description')
+                                     ->label('وصف النشرة البريدية')
+                                     ,
                             ]),
                     ]),
             ]);
@@ -188,12 +195,12 @@ class HomeSettingResource extends Resource
                 ]),
             ]);
     }
-    
+
     public static function getRelations(): array
     {
         return [];
     }
-    
+
     public static function getPages(): array
     {
         return [
@@ -201,5 +208,5 @@ class HomeSettingResource extends Resource
             'create' => Pages\CreateHomeSetting::route('/create'),
             'edit' => Pages\EditHomeSetting::route('/{record}/edit'),
         ];
-    }    
+    }
 }
