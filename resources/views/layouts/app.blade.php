@@ -5,38 +5,99 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>@yield('title', 'اسم الموقع')</title>
-
     @if(View::hasSection('meta_description'))
     <meta name="description" content="@yield('meta_description')">
-    @endif
+@endif
 
-    @if(View::hasSection('meta_tags'))
-        <meta name="tags" content="@yield('meta_tags')">
-    @endif
+@if(View::hasSection('meta_tags'))
+    <meta name="tags" content="@yield('meta_tags')">
+@endif
 
-    @if(View::hasSection('meta_keywords'))
-        <meta name="keywords" content="@yield('meta_keywords')">
-    @endif
+@if(View::hasSection('meta_keywords'))
+    <meta name="keywords" content="@yield('meta_keywords')">
+@endif
 
-    @if(View::hasSection('focus_keywords'))
-        <meta name="news_keywords" content="@yield('focus_keywords')">
-        @endif
+@if(View::hasSection('focus_keywords'))
+    <meta name="news_keywords" content="@yield('focus_keywords')">
+@endif
+
+@if(View::hasSection('og_title'))
+    <meta property="og:locale" content="@yield('og_locale', 'ar_AR')" />
+    <meta property="og:type" content="@yield('og_type', 'article')" />
+    <meta property="og:title" content="@yield('og_title')" />
+    <meta property="og:description" content="@yield('og_description')" />
+    <meta property="og:image" content="@yield('og_image')" />
+    <meta property="og:url" content="@yield('og_url')" />
+    <meta property="og:site_name" content="@yield('og_site_name', config('app.name'))" />
+@endif
+
+@if(View::hasSection('twitter_title'))
+    <meta name="twitter:card" content="@yield('twitter_card', 'summary_large_image')" />
+    <meta name="twitter:title" content="@yield('twitter_title')" />
+    <meta name="twitter:description" content="@yield('twitter_description')" />
+    <meta name="twitter:image" content="@yield('twitter_image')" />
+    <meta name="twitter:url" content="@yield('twitter_url')" />
+@endif
+
+@if(View::hasSection('robots'))
+    <meta name="robots" content="@yield('robots')">
+@endif
+
+
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="{{ asset('website/assets/css/bootstrap.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('website/assets/css/fontawesome.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('website/assets/css/magnific-popup.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('website/assets/css/swiper-bundle.min.css') }}">
-        <link rel="stylesheet" href="{{ asset('website/assets/css/style.css') }}">
         <link rel="stylesheet" href="{{ asset('website/assets/css/bootstrap.min.css') }}">
-        <!-- Fontawesome Icon -->
         <link rel="stylesheet" href="{{ asset('website/assets/css/fontawesome.min.css') }}">
-        <!-- Magnific Popup -->
         <link rel="stylesheet" href="{{ asset('website/assets/css/magnific-popup.min.css') }}">
-        <!-- Swiper Js -->
         <link rel="stylesheet" href="{{ asset('website/assets/css/swiper-bundle.min.css') }}">
-        <!-- Theme Custom CSS -->
         <link rel="stylesheet" href="{{ asset('website/assets/css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('website/assets/css/custom.css') }}">
+
+        <!-- Additional mobile styles -->
+        <style>
+            .th-menu-wrapper .th-menu-area{
+              margin-right: auto;
+            }
+            .th-menu-wrapper.th-body-visible .th-menu-area {
+              left: 0;
+              opacity: 1;
+              visibility: visible;
+              margin-right: auto;
+            }
+            @media (max-width: 767px) {
+                .container {
+                    padding-left: 15px;
+                    padding-right: 15px;
+                }
+                
+                /* Add more space between sections on mobile */
+                .space-top {
+                    padding-top: 40px;
+                }
+                
+                .space-bottom {
+                    padding-bottom: 40px;
+                }
+                
+                /* Ensure buttons are properly spaced */
+                .btn-group {
+                    gap: 10px;
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+                
+                /* Improve touchability on mobile */
+                .btn-group a,
+                .btn-group button {
+                    min-width: 120px;
+                    min-height: 44px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        </style>
 
 
     <!-- Favicons -->
@@ -286,12 +347,218 @@
             <button type="submit"><i class="fal fa-search"></i></button>
         </form>
     </div>
-
+    
     <!-- Mobile Menu -->
     @include('website.partials.mobile-menu')
 
-    <!-- Header -->
-    @include('website.partials.header')
+    <!-- Header Area -->
+    <header class="th-header header-layout4 onepage-nav">
+        <div class="sticky-wrapper">
+            <!-- Main Menu Area -->
+            <div class="menu-area">
+                <div class="container th-container4">
+                    <div class="row align-items-center justify-content-between">
+                        <div class="col-auto">
+                            <div class="header-logo">
+                            <a href="{{ url('/') }}">
+                                <img src="{{ asset('website/assets/img/rose3.png') }}" alt="Rosemary" width="154" height="54">
+                            </a>
+
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <nav class="main-menu d-none d-lg-inline-block">
+                                <ul>
+                                    <li class="menu-item">
+                                        <a href="{{ url('/') }}">الرئيسية</a>
+                                    </li>
+                                    <li class="menu-item-has-children">
+                                        <a href="{{ route('shop.index') }}">المنتجات</a>
+                                        <ul class="sub-menu">
+                                            @php
+                                                $categories = \App\Models\HomeCategory::withCount('products')->get();
+                                            @endphp
+                                            @foreach($categories as $category)
+                                                <li>
+                                                    <a href="{{ route('shop.index', ['category' => $category->id]) }}">
+                                                        {{ $category->name }} ({{ $category->products_count }})
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </li>
+                                    <li><a href="{{ route('about') }}">من نحن</a></li>
+                                    <li><a href="{{ route('contact') }}">تواصل معنا</a></li>
+                                    <li><a href="{{ route('blogs.index') }}">المدونة </a></li>
+                                    <!-- <li><a href="#faq-sec">FAQ</a></li> -->
+                                </ul>
+                            </nav>
+                        </div>
+                        <div class="col-auto">
+                                                    <div class="header-button">
+                                                        <!-- <a href="#login-form" class="popup-content d-none d-xl-block"><img src="{{ asset('website/assets/img/icon/user3.svg') }}" alt="">Login / Register</a> -->
+                                                        <div class="cart-wrapper">
+                                                            <button type="button" class="icon-btn sideMenuToggler" id="cartToggle">
+                                                                <i class="fa-sharp fa-solid fa-cart-shopping"></i>
+                                                                <span id="cart-count" class="badge">{{ \App\Models\Cart::where('session_id', session()->getId())->sum('quantity') }}</span>
+                                                            </button>
+                                                            <!-- Cart Dropdown -->
+                                                            <div class="cart-dropdown" id="cartDropdown">
+                                                                <div class="cart-items-container">
+                                                                    @php
+                                                                        $cartItems = \App\Models\Cart::where('session_id', session()->getId())->with('product')->get();
+                                                                        $total = 0;
+                                                                    @endphp
+                                                                    @foreach($cartItems as $item)
+                                                                        <div class="cart-item">
+                                                                            <img src="{{ str_replace('storage/app/public/', 'storage/', $item->product->getFirstMediaUrl('product_images')) }}" alt="{{ $item->product->name }}">
+                                                                            <div class="item-details">
+                                                                                <h5>{{ $item->product->name }}</h5>
+                                                                                <p>{{ $item->quantity }} × {{ number_format($item->product->discounted_price ?? $item->product->price, 2) }} ج.م</p>
+                                                                            </div>
+                                                                        </div>
+                                                                        @php
+                                                                            $total += $item->quantity * ($item->product->discounted_price ?? $item->product->price);
+                                                                        @endphp
+                                                                    @endforeach
+                                                                </div>
+                                                                <div class="cart-total">
+                                                                    <span>الإجمالي:</span>
+                                                                    <span>{{ number_format($total, 2) }} ج.م</span>
+                                                                </div>
+                                                                <div class="cart-actions">
+                                                                    <a href="{{ route('cart.index') }}" class="th-btn">عرض السلة</a>
+                                                                    <button onclick="closeCartDropdown()" class="th-btn">متابعة التسوق</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <button type="button" class="th-menu-toggle2 style2 d-block d-lg-none"><i class="far fa-bars"></i></button>
+                                                    </div>
+                                                </div>
+                        
+                                                <style>
+                                                .cart-wrapper {
+                                                    position: relative;
+                                                }
+                                                
+                                                .cart-dropdown {
+                                                    position: absolute;
+                                                    top: 100%;
+                                                    right: 0;
+                                                    width: 300px;
+                                                    background: white;
+                                                    border-radius: 8px;
+                                                    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+                                                    padding: 15px;
+                                                    display: none;
+                                                    z-index: 1000;
+                                                }
+                                                
+                                                .cart-dropdown.show {
+                                                    display: block;
+                                                    animation: slideIn 0.3s ease;
+                                                }
+                                                
+                                                .cart-items-container {
+                                                    max-height: 300px;
+                                                    overflow-y: auto;
+                                                }
+                                                
+                                                .cart-item {
+                                                    display: flex;
+                                                    align-items: center;
+                                                    gap: 10px;
+                                                    padding: 10px 0;
+                                                    border-bottom: 1px solid #eee;
+                                                }
+                                                
+                                                .cart-item:last-child {
+                                                    border-bottom: none;
+                                                }
+                                                
+                                                .cart-item img {
+                                                    width: 50px;
+                                                    height: 50px;
+                                                    object-fit: cover;
+                                                    border-radius: 4px;
+                                                }
+                                                
+                                                .item-details h5 {
+                                                    margin: 0;
+                                                    font-size: 14px;
+                                                }
+                                                
+                                                .item-details p {
+                                                    margin: 5px 0 0;
+                                                    color: #666;
+                                                    font-size: 12px;
+                                                }
+                                                
+                                                .cart-total {
+                                                    display: flex;
+                                                    justify-content: space-between;
+                                                    padding: 15px 0;
+                                                    border-top: 2px solid #eee;
+                                                    margin-top: 10px;
+                                                    font-weight: bold;
+                                                }
+                                                
+                                                .cart-actions {
+                                                    display: flex;
+                                                    gap: 10px;
+                                                    margin-top: 10px;
+                                                }
+                                                
+                                                .cart-actions .th-btn {
+                                                    flex: 1;
+                                                    text-align: center;
+                                                    padding: 8px;
+                                                    font-size: 14px;
+                                                }
+                                                
+                                                @keyframes slideIn {
+                                                    from {
+                                                        opacity: 0;
+                                                        transform: translateY(-10px);
+                                                    }
+                                                    to {
+                                                        opacity: 1;
+                                                        transform: translateY(0);
+                                                    }
+                                                }
+                                                </style>
+                        
+                                                <script>
+                                                document.addEventListener('DOMContentLoaded', function() {
+                                                    const cartToggle = document.getElementById('cartToggle');
+                                                    const cartDropdown = document.getElementById('cartDropdown');
+                                                    
+                                                    if (cartToggle && cartDropdown) {
+                                                        cartToggle.addEventListener('click', function(e) {
+                                                            e.stopPropagation();
+                                                            cartDropdown.classList.toggle('show');
+                                                        });
+                                                        
+                                                        document.addEventListener('click', function(e) {
+                                                            if (!cartDropdown.contains(e.target) && !cartToggle.contains(e.target)) {
+                                                                cartDropdown.classList.remove('show');
+                                                            }
+                                                        });
+                                                    }
+                                                });
+                                                
+                                                function closeCartDropdown() {
+                                                    const cartDropdown = document.getElementById('cartDropdown');
+                                                    if (cartDropdown) {
+                                                        cartDropdown.classList.remove('show');
+                                                    }
+                                                }
+                                                </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <!-- Main Content -->
     @yield('content')
@@ -343,6 +610,7 @@
 
 <!-- Main Js File -->
 <script src="{{ asset('website/assets/js/main.js') }}"></script>
+<script src="{{ asset('website/assets/js/custom.js') }}"></script>
 
 
     <!-- Notifications Container -->

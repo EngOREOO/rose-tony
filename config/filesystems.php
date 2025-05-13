@@ -37,7 +37,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage/app/public',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
         ],
@@ -45,9 +45,15 @@ return [
         'media' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage/app/public',
+            'url' => env('APP_URL').'/storage',
             'visibility' => 'public',
             'throw' => false,
+        ],
+
+        'feature_icons' => [
+        'driver' => 'local',
+        'root' => storage_path('app/feature-icons'), // اختر مجلد آخر هنا
+        'visibility' => 'private', // يمكنك تحديد "public" أو "private" حسب الحاجة
         ],
 
         's3' => [

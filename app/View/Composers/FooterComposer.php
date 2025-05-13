@@ -26,11 +26,13 @@ class FooterComposer
 
         $customerServiceLinks = FooterMenuItem::customerService()->get();
         $ordersReturnLinks = FooterMenuItem::ordersReturn()->get();
+        $bestSellerLinks = FooterMenuItem::bestSellers()->get();
 
         $view->with([
             'footerSettings' => $footerSettings,
             'customerServiceLinks' => $customerServiceLinks,
             'ordersReturnLinks' => $ordersReturnLinks,
+            'bestSellerLinks' => $bestSellerLinks,
         ]);
     }
 }

@@ -5,7 +5,7 @@
 <!--==============================
 Breadcumb
 ============================== -->
-<div class="breadcumb-wrapper" data-bg-src="{{ asset('assets/img/bg/breadcumb-bg.jpg') }}">
+<!-- <div class="breadcumb-wrapper" data-bg-src="{{ asset('assets/img/bg/breadcumb-bg.jpg') }}">
     <div class="container">
         <div class="breadcumb-content">
             <h1 class="breadcumb-title">Contact Us</h1>
@@ -15,7 +15,7 @@ Breadcumb
             </ul>
         </div>
     </div>
-</div>
+</div> -->
 
 <!--==============================
 Contact Area   
@@ -98,6 +98,11 @@ Contact Area
 <div class="space-bottom">
     <div class="container">
         <div class="row gy-4">
+            <div class="col-lg-5">
+                <div class="contact-image">
+                    <img src="{{ asset('storage/' .$contact->image) }}" alt="Contact">
+                </div>
+            </div>
             <div class="col-lg-7">
                 <div class="">
                     <form action="{{ route('contact.submit') }}" method="POST" class="contact-form2 ajax-contact">
@@ -135,11 +140,6 @@ Contact Area
                             </div>
                         @endif
                     </form>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="contact-image">
-                    <img src="{{ asset('storage/' .$contact->image) }}" alt="Contact">
                 </div>
             </div>
         </div>

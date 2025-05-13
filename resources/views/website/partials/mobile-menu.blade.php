@@ -2,40 +2,31 @@
     <div class="th-menu-area text-center">
         <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
         <div class="mobile-logo">
-            <a href="{{ route('home') }}"><img src="{{ asset('website/assets/img/logo.svg') }}" alt="Erna"></a>
+            <a href="{{ route('home') }}"><img src="{{ asset('website/assets/img/rose3.png') }}" alt="Rosemary"></a>
         </div>
         <div class="th-mobile-menu">
             <ul>
-                <li class="menu-item-has-children">
-                    <a href="{{ route('home') }}">Home</a>
+                <li class="menu-item">
+                    <a href="{{ url('/') }}">الرئيسية</a>
                 </li>
                 <li class="menu-item-has-children">
-                    <a href="{{ route('shop.index') }}">Shop</a>
+                    <a href="{{ route('shop.index') }}">المنتجات</a>
                     <ul class="sub-menu">
-                        <li><a href="{{ route('shop.index') }}">Shop Grid</a></li>
-                        <li><a href="#">Shop Grid With Right Sidebar</a></li>
-                        <li><a href="#">Cart Page</a></li>
-                        <li><a href="#">Checkout</a></li>
-                        <li><a href="#">Wishlist</a></li>
-                        <li><a href="#">My Account</a></li>
+                        @php
+                            $categories = \App\Models\HomeCategory::withCount('products')->get();
+                        @endphp
+                        @foreach($categories as $category)
+                            <li>
+                                <a href="{{ route('shop.index', ['category' => $category->id]) }}">
+                                    {{ $category->name }} ({{ $category->products_count }})
+                                </a>
+                            </li>
+                        @endforeach
                     </ul>
                 </li>
-                <li class="menu-item-has-children">
-                    <a href="#">About Us</a>
-                    <ul class="sub-menu">
-                        <li><a href="#">About Style 1</a></li>
-                        <li><a href="#">About Style 2</a></li>
-                    </ul>
-                </li>
-                <li class="menu-item-has-children">
-                    <a href="#">Pages</a>
-                    <ul class="sub-menu">
-                        <li><a href="#">Order Tracking</a></li>
-                        <li><a href="#">FAQ Page</a></li>
-                        <li><a href="#">Error Page</a></li>
-                    </ul>
-                </li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="{{ route('about') }}">من نحن</a></li>
+                <li><a href="{{ route('contact') }}">تواصل معنا</a></li>
+                <li><a href="{{ route('blogs.index') }}">المدونة</a></li>
             </ul>
         </div>
     </div>

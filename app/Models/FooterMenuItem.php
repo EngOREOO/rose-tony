@@ -22,4 +22,9 @@ class FooterMenuItem extends Model
     {
         return $query->where('section', 'orders_return')->orderBy('sort_order');
     }
+
+    public function scopeBestSellers($query)
+    {
+        return $query->where('section', 'best_sellers')->orderBy('sort_order');
+    }
 }

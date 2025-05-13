@@ -32,6 +32,7 @@ class Product extends Model implements HasMedia
         "quantity",
         "in_stock",
         "category_id",
+        "home_category_id",
         "benefits",
         "ingredients",
         "usage",
@@ -200,5 +201,13 @@ class Product extends Model implements HasMedia
     public function category()
     {
         return $this->belongsTo(Category::class);
+    }
+
+    /**
+     * Get the home category that owns the product.
+     */
+    public function homeCategory()
+    {
+        return $this->belongsTo(HomeCategory::class);
     }
 }

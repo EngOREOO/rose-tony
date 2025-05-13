@@ -18,10 +18,14 @@ class AboutUs extends Model
         'our_mission',
         'our_principles',
         'partners_logos',
-        'top_image'
+        'top_image',
+        'application_benefits',
+        'counters'
     ];
     protected $casts = [
         'side_images' => 'array',
-        'partners_logos' => 'array'
+        'partners_logos' => 'array',
+        'application_benefits' => 'array',
+        'counters' => 'array'
     ];
 }

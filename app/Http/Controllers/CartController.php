@@ -1,5 +1,54 @@
 <?php
 
+namespace App\Http\Controllers;
+
+use App\Models\Cart;
+use App\Models\Product;
+use Illuminate\Http\Request;
+
+class CartController extends Controller
+{
+    public function getCartItems()
+    {
+        $cartItems = Cart::where('session_id', session()->getId())
+                        ->with('product')
+                        ->get();
+        
+        $total = 0;
+        foreach ($cartItems as $item) {
+            $total += $item->quantity * ($item->product->discounted_price ?? $item->product->price);
+        }
+
+        return view('cart.dropdown-items', compact('cartItems', 'total'));
+    }
+
+    public function addToCart(Request $request, $slug)
+    {
+        $product = Product::where('slug', $slug)->firstOrFail();
+        $sessionId = session()->getId();
+        
+        $cartItem = Cart::firstOrNew([
+            'session_id' => $sessionId,
+            'product_id' => $product->id
+        ]);
+
+        $quantity = $request->input('quantity', 1);
+        $cartItem->quantity = $request->has('quantity') ?
+            ($cartItem->exists ? $cartItem->quantity + $quantity : $quantity) :
+            ($cartItem->exists ? $cartItem->quantity + 1 : 1);
+        
+        $cartItem->save();
+
+        $cartCount = Cart::where('session_id', $sessionId)->sum('quantity');
+
+        return response()->json([
+            'success' => true,
+            'cartCount' => $cartCount,
+            'message' => 'تمت إضافة المنتج للسلة'
+        ]);
+    }
+}
+
 // app/Http/Controllers/CartController.php
 
 namespace App\Http\Controllers;

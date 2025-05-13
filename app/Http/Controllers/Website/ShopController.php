@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\Category;
+use App\Models\HomeCategory;
+use App\Models\PromotionalImage;
 use Illuminate\Http\Request;
 
 class ShopController extends Controller
@@ -41,9 +42,7 @@ class ShopController extends Controller
 
         // Handle category filter
         if ($request->has('category')) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('id', $request->category);
-            });
+            $query->where('home_category_id', $request->category);
         }
 
         // Handle search
@@ -64,12 +63,17 @@ class ShopController extends Controller
             ->toArray();
 
         // Get categories with product counts
-        $categories = Category::withCount('products')
+        $categories = HomeCategory::withCount('products')
             ->having('products_count', '>', 0)
             ->orderBy('name')
             ->get();
 
-        return view('website.shop', compact('products', 'sizes', 'categories'));
+        // Get active promotional image
+        $promotionalImage = PromotionalImage::where('is_active', true)
+            ->orderBy('sort_order')
+            ->first();
+
+        return view('website.shop', compact('products', 'sizes', 'categories', 'promotionalImage'));
     }
 
     public function show(Product $product)
@@ -210,6 +214,20 @@ class ShopController extends Controller
                 'description' => $product->description,
                 'image' => $product->getFirstMediaUrl('product_images'),
             ]
+        ]);
+    }
+
+    /**
+     * Display the cart page
+     */
+    public function cart()
+    {
+        $cartItems = collect(session()->get('cart_items', []));
+        $total = $this->calculateCartTotal($cartItems->toArray());
+
+        return view('cart.index', [
+            'cartItems' => $cartItems,
+            'total' => $total
         ]);
     }
 }

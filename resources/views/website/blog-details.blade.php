@@ -1,10 +1,31 @@
+
 @extends('layouts.app')
+
+@section('og_locale'){{ $blog->og_locale ?? 'ar_AR' }}@endsection
+@section('og_type'){{ $blog->og_type ?? 'article' }}@endsection
+@section('og_title'){{ $blog->meta_title ?? $blog->title }}@endsection
+@section('og_description'){{ $blog->meta_description ?? Str::limit(strip_tags($blog->content), 160) }}@endsection
+@section('og_image'){{ asset('storage/' . $blog->image) }}@endsection
+@section('og_url'){{ url()->current() }}@endsection
+@section('og_site_name'){{ config('app.name') }}@endsection
+@section('title'){{ $blog->meta_title ?? $blog->title }}@endsection
+
+@section('meta_description'){{ $blog->meta_description ?? Str::limit(strip_tags($blog->content), 160) }}@endsection
+
+@section('meta_keywords'){{ is_array($blog->meta_keywords) ? implode(', ', $blog->meta_keywords) : $blog->meta_keywords }}@endsection
+
+@section('focus_keywords'){{ is_array($blog->meta_keywords) ? implode(', ', $blog->meta_keywords) : $blog->meta_keywords }}@endsection
+@section('twitter_card')'summary_large_image'@endsection
+@section('twitter_title'){{ $blog->meta_title ?? $blog->title }}@endsection
+@section('twitter_description'){{ $blog->meta_description ?? Str::limit(strip_tags($blog->content), 160) }}@endsection
+@section('twitter_image'){{ asset('storage/' . $blog->image) }}@endsection
+@section('twitter_url'){{ url()->current() }}@endsection
 
 @section('content')
 <!--==============================
     Breadcumb
 ============================== -->
-<div class="breadcumb-wrapper" data-bg-src="{{ asset('website/images/bg/breadcumb-bg.jpg') }}">
+<!-- <div class="breadcumb-wrapper" data-bg-src="{{ asset('website/images/bg/breadcumb-bg.jpg') }}">
     <div class="container">
         <div class="breadcumb-content">
             <h1 class="breadcumb-title">{{ $blog->title }}</h1>
@@ -15,7 +36,7 @@
             </ul>
         </div>
     </div>
-</div>
+</div> -->
 
 <!--==============================
 Blog Area
@@ -36,22 +57,49 @@ Blog Area
                             <a href="#">{{ $blog->created_at->format('d M, Y') }}</a>
                         </div>
                         <h2 class="box-title">{{ $blog->title }}</h2>
-                        <div class="blog-content">
-                            {!! $blog->content !!}
+                        
+                        {!! $blog->content !!}
+
+                        @if($blog->quote_text)
+                        <blockquote>
+                            <p>{{ $blog->quote_text }}</p>
+                            <cite>{{ $blog->quote_author }}</cite>
+                        </blockquote>
+                        @endif
+
+                        @if(!empty($blog->gallery_images))
+                        <div class="row">
+                            @foreach($blog->gallery_images as $image)
+                            <div class="col-md-4">
+                                <div class="blog-img img-shine">
+                                    <img class="w-100" src="{{ asset('storage/' . $image) }}" alt="Blog Image">
+                                </div>
+                            </div>
+                            @endforeach
                         </div>
+                        @endif
 
                         <div class="share-links clearfix">
                             <div class="row justify-content-between">
                                 <div class="col-sm-auto">
-                                    <span class="share-links-title">Tags:</span>
+                                    <!-- <span class="share-links-title">الوسوم:</span> -->
                                     <div class="tagcloud">
-                                        @foreach(explode(',', $blog->tags) as $tag)
-                                            <a href="{{ route('blogs.search', ['query' => trim($tag)]) }}">{{ trim($tag) }}</a>
-                                        @endforeach
+                                   @php
+                                        $allTags = \App\Models\Blog::pluck('tags')->flatMap(function($tags) {
+                                            // Check if $tags is a string, then use explode(), otherwise return the array directly
+                                            return is_string($tags) ? explode(',', $tags) : $tags;
+                                        })->unique();
+                                    @endphp
+
+                                    <!-- @foreach($allTags as $tag)
+                                        <a href="{{ route('blogs.search', ['query' => trim($tag)]) }}">{{ trim($tag) }}</a>
+                                    @endforeach -->
+
+
                                     </div>
                                 </div>
                                 <div class="col-sm-auto text-xl-end">
-                                    <span class="share-links-title">Share On:</span>
+                                    <span class="share-links-title">مشاركة علي:</span>
                                     <div class="th-social">
                                         <a href="https://facebook.com/share?url={{ url()->current() }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
                                         <a href="https://twitter.com/share?url={{ url()->current() }}" target="_blank"><i class="fab fa-twitter"></i></a>
@@ -61,67 +109,114 @@ Blog Area
                             </div>
                         </div>
 
-                        <!-- Blog Navigation -->
-                        @if($relatedBlogs->count() > 0)
                         <div class="blog-navigation">
-                            @if($relatedBlogs->first())
-                            <a href="{{ route('blogs.show', $relatedBlogs->first()->slug) }}" class="nav-btn prev">
-                                <span class="nav-text"><i class="fa-regular fa-arrow-left-long me-2"></i>Previous</span>
+                            @if($blog->getPreviousBlog())
+                            <a href="{{ route('blogs.show', $blog->getPreviousBlog()->slug) }}" class="nav-btn prev">
+                                <span class="nav-text"><i class="fa-regular fa-arrow-left-long me-2"></i>السابق</span>
                             </a>
                             @endif
-                            @if($relatedBlogs->last())
-                            <a href="{{ route('blogs.show', $relatedBlogs->last()->slug) }}" class="nav-btn next">
-                                <span class="nav-text">Next<i class="fa-regular fa-arrow-right-long ms-2"></i></span>
+                            @if($blog->getNextBlog())
+                            <a href="{{ route('blogs.show', $blog->getNextBlog()->slug) }}" class="nav-btn next">
+                                <span class="nav-text">التالي<i class="fa-regular fa-arrow-right-long ms-2"></i></span>
                             </a>
                             @endif
                         </div>
-                        @endif
-                    </div>
-                </div>
 
-                <!-- Related Posts -->
-                @if($relatedBlogs->count() > 0)
-                <div class="related-posts mt-5">
-                    <h3 class="blog-inner-title h4">Related Posts</h3>
-                    <div class="row">
-                        @foreach($relatedBlogs as $relatedBlog)
-                        <div class="col-md-6">
-                            <div class="th-blog blog-single grid">
-                                <div class="blog-img img-shine">
-                                    <a href="{{ route('blogs.show', $relatedBlog->slug) }}">
-                                        <img src="{{ asset('storage/' . $relatedBlog->image) }}" alt="{{ $relatedBlog->title }}">
-                                    </a>
-                                </div>
-                                <div class="blog-content">
-                                    <div class="blog-meta">
-                                        <a href="#">By {{ $relatedBlog->author }}</a>
-                                        <a href="#">{{ $relatedBlog->created_at->format('d M, Y') }}</a>
+                        <!-- Related Posts -->
+                        <div class="related-posts-area">
+                            <h2 class="blog-inner-title h4">مقالات متعلقة</h2>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="swiper related-blog-slider" dir="rtl">
+                                        <div class="swiper-wrapper">
+                                            @foreach(\App\Models\Blog::where('category_id', $blog->category_id)
+                                                    ->where('id', '!=', $blog->id)
+                                                    ->where('is_active', true)
+                                                    ->latest()
+                                                    ->take(6)
+                                                    ->get() as $relatedBlog)
+                                            <div class="swiper-slide">
+                                                <div class="th-blog blog-single">
+                                                    <div class="blog-img">
+                                                        <a href="{{ route('blogs.show', $relatedBlog->slug) }}">
+                                                            <img src="{{ asset('storage/' . $relatedBlog->image) }}" alt="{{ $relatedBlog->title }}">
+                                                        </a>
+                                                    </div>
+                                                    <div class="blog-content">
+                                                        <div class="blog-meta">
+                                                            <a href="#">{{ $relatedBlog->created_at->format('d M, Y') }}</a>
+                                                        </div>
+                                                        <h3 class="box-title">
+                                                            <a href="{{ route('blogs.show', $relatedBlog->slug) }}">
+                                                                {{ Str::limit($relatedBlog->title, 60) }}
+                                                            </a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="swiper-button-next"></div>
+                                        <div class="swiper-button-prev"></div>
                                     </div>
-                                    <h4 class="box-title">
-                                        <a href="{{ route('blogs.show', $relatedBlog->slug) }}">{{ $relatedBlog->title }}</a>
-                                    </h4>
-                                    <a href="{{ route('blogs.show', $relatedBlog->slug) }}" class="line-btn">Read More</a>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
                     </div>
                 </div>
-                @endif
+
+
+                <!-- <div class="th-comment-form">
+                    <div class="form-title">
+                        <h3 class="blog-inner-title h4 mb-2">Leave a Reply</h3>
+                        <p class="form-text">Your email address will not be published. Required fields are marked *</p>
+                    </div>
+                    <form action="{{ route('blogs.comment', $blog->id) }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="parent_id" id="parent_id">
+                        <div class="row">
+                            <div class="col-md-6 form-group">
+                                <input type="text" name="name" placeholder="Your Name*" class="form-control" required>
+                            </div>
+                            <div class="col-md-6 form-group">
+                                <input type="email" name="email" placeholder="Email Address*" class="form-control" required>
+                            </div>
+                            <div class="col-12 form-group">
+                                <textarea name="comment" placeholder="Type Your Message" class="form-control" required></textarea>
+                            </div>
+                            <div class="col-12 form-group mb-0">
+                                <button class="th-btn btn-fw text-uppercase">Submit Comment</button>
+                            </div>
+                        </div>
+                    </form>
+                </div> -->
             </div>
 
             <div class="col-lg-4">
                 <aside class="sidebar-area">
                     <div class="widget widget_search">
                         <form class="search-form" action="{{ route('blogs.search') }}" method="GET">
-                            <input type="text" name="query" placeholder="Search blogs..." value="{{ request('query') }}">
+                            <input style="text-align: center;" type="text" name="query" placeholder="بحث..." value="{{ request('query') }}">
                             <button type="submit"><i class="far fa-search"></i></button>
                         </form>
                     </div>
 
+                    <div class="widget widget_categories">
+                        <h3 class="widget_title">الأقسام</h3>
+                        <ul>
+                            @foreach(\App\Models\BlogCategory::withCount('blogs')->get() as $category)
+                                <li>
+                                    <a href="{{ route('blogs.index', ['category' => $category->slug]) }}">
+                                        {{ $category->name }} ({{ $category->blogs_count }})
+                                    </a>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+
                     @if(isset($recentPosts))
                     <div class="widget">
-                        <h3 class="widget_title">Recent Posts</h3>
+                        <h3 class="widget_title">أحدث المقالات</h3>
                         <div class="recent-post-wrap">
                             @foreach($recentPosts as $recentPost)
                             <div class="recent-post">
@@ -147,13 +242,19 @@ Blog Area
                     @endif
 
                     <div class="widget widget_tag_cloud">
-                        <h3 class="widget_title">Popular Tags</h3>
+                        <h3 class="widget_title">الوسوم</h3>
                         <div class="tagcloud">
-                            @php
+                           @php
                                 $allTags = \App\Models\Blog::pluck('tags')->flatMap(function($tags) {
-                                    return explode(',', $tags);
+                                    // Check if $tags is a string, then use explode(), otherwise return the array directly
+                                    if (is_string($tags)) {
+                                        return explode(',', $tags);
+                                    }
+                                    // If $tags is already an array, return it directly
+                                    return $tags;
                                 })->unique();
                             @endphp
+
                             @foreach($allTags as $tag)
                                 <a href="{{ route('blogs.search', ['query' => trim($tag)]) }}">{{ trim($tag) }}</a>
                             @endforeach

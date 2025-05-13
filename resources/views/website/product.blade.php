@@ -233,14 +233,122 @@
     display: inline-block;
 }
 
-    </style>
+</style>
+
+<!-- Cart Preview Styles -->
+<style>
+.cart-preview {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 300px;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.cart-preview.show {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.cart-preview-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.cart-preview-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.cart-preview-item img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.cart-preview-item-details {
+    flex: 1;
+}
+
+.cart-preview-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.cart-preview-actions .th-btn {
+    flex: 1;
+    text-align: center;
+    padding: 8px;
+    font-size: 14px;
+}
+
+.close-preview {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #666;
+}
+</style>
+
+
+<!-- Cart Preview -->
+<div class="cart-preview" id="cartPreview">
+    <div class="cart-preview-header">
+        <span class="success-icon">✓</span>
+        <h4 style="margin: 0;">تمت الإضافة للسلة</h4>
+        <button class="close-preview" onclick="closeCartPreview()">&times;</button>
+    </div>
+    <div class="cart-preview-item">
+        <img id="previewProductImage" src="" alt="">
+        <div class="cart-preview-item-details">
+            <h5 id="previewProductName" style="margin: 0 0 5px 0;"></h5>
+            <p id="previewProductPrice" style="margin: 0; color: #666;"></p>
+            <p id="previewProductQuantity" style="margin: 5px 0 0 0; font-size: 14px;"></p>
+        </div>
+    </div>
+    <div class="cart-preview-actions">
+        <a href="{{ route('cart.index') }}" class="th-btn">عرض السلة</a>
+        <button class="th-btn" onclick="closeCartPreview()">متابعة التسوق</button>
+    </div>
+</div>
 
 <!--Product Details-->
 <section class="product-details space-top space-extra-bottom">
     <div class="container">
         <div class="row gx-60">
-            <div class="col-xl-6">
-                <div class="product-big-img" style="overflow: unset">
+            <!-- Product Title for Mobile -->
+            <div class="col-12 d-block d-xl-none mb-4">
+                <h1 class="product-title">{{ $product->name }}</h1>
+            </div>
+            
+            <div class="col-xl-6 order-1 order-xl-0">
+                <div class="product-big-img mb-5 mb-xl-0" style="overflow: unset">
                     @php
                         $fixedPath = str_replace('storage/app/public/', 'storage/', $product->getFirstMediaUrl('product_images'));
                     @endphp
@@ -277,7 +385,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-6 align-self-center">
+            <div class="col-xl-6 align-self-center order-2 order-xl-1 mt-4 mt-xl-0">
                 <div class="product-about">
                     <div class="product-rating">
                         @php
@@ -289,7 +397,7 @@
                         </div>
                         <a href="#reviews" class="woocommerce-review-link">({{ $reviewsCount ?? 0 }} تقييم)</a>
                     </div>
-                    <h1 class="product-title">{{ $product->name }}</h1>
+                    <h1 class="product-title d-none d-xl-block">{{ $product->name }}</h1>
                     <p class="price">
                         @if($product->discounted_price)
                             <del>{{ number_format($product->price, 2) }} ج.م</del>
@@ -309,6 +417,26 @@
 
 
                     <script>
+                        // Update cart dropdown content
+                        function updateCartDropdown() {
+                            const cartDropdown = document.getElementById('cartDropdown');
+                            if (cartDropdown) {
+                                fetch('/cart/items') // You'll need to create this endpoint
+                                    .then(response => response.text())
+                                    .then(html => {
+                                        cartDropdown.innerHTML = html;
+                                    });
+                            }
+                        }
+
+                        // Update cart count
+                        function updateCartCount(count) {
+                            const cartCountElement = document.getElementById('cart-count');
+                            if (cartCountElement) {
+                                cartCountElement.textContent = count;
+                            }
+                        }
+
                         document.getElementById('main-read-more').addEventListener('click', function () {
                             const content = document.getElementById('main-description');
                             content.classList.toggle('expanded');
@@ -353,6 +481,91 @@
                             });
                         });
 
+                    </script>
+
+                    <!-- Cart functionality script -->
+                    <script>
+                        document.querySelector('.add-to-cart').addEventListener('click', function() {
+                            const quantityInput = document.querySelector('.qty-input');
+                            const quantity = quantityInput ? parseInt(quantityInput.value) : 1;
+                            const slug = this.dataset.productSlug;
+
+                            fetch(`/cart/add/${slug}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                                },
+                                body: JSON.stringify({ quantity: quantity })
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    // Update cart count
+                                    updateCartCount(data.cartCount);
+                                    
+                                    // Update cart dropdown
+                                    updateCartDropdown();
+                                    
+                                    // Show success message
+                                    const productDetails = {
+                                        name: '{{ $product->name }}',
+                                        image: '{{ $fixedPath }}',
+                                        price: '@if($product->discounted_price){{ number_format($product->discounted_price, 2) }}@else{{ number_format($product->price, 2) }}@endif ج.م',
+                                        quantity: quantity
+                                    };
+                                    showCartPreview(productDetails);
+                                }
+                            })
+                            .catch(error => console.error('Error:', error));
+                        });
+                    </script>
+
+                    <!-- Cart Preview JavaScript -->
+                    <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const addToCartBtn = document.querySelector('.add-to-cart');
+                        if (addToCartBtn) {
+                            addToCartBtn.addEventListener('click', function() {
+                                const quantityInput = document.querySelector('.qty-input');
+                                const quantity = quantityInput ? quantityInput.value : 1;
+                                
+                                const productDetails = {
+                                    name: '{{ $product->name }}',
+                                    image: '{{ $fixedPath }}',
+                                    price: '@if($product->discounted_price){{ number_format($product->discounted_price, 2) }}@else{{ number_format($product->price, 2) }}@endif ج.م',
+                                    quantity: quantity
+                                };
+                                
+                                showCartPreview(productDetails);
+                            });
+                        }
+
+                        function showCartPreview(product) {
+                            const preview = document.getElementById('cartPreview');
+                            const image = document.getElementById('previewProductImage');
+                            const name = document.getElementById('previewProductName');
+                            const price = document.getElementById('previewProductPrice');
+                            const quantity = document.getElementById('previewProductQuantity');
+                            
+                            // Update preview content
+                            image.src = product.image;
+                            name.textContent = product.name;
+                            price.textContent = product.price;
+                            quantity.textContent = `الكمية: ${product.quantity}`;
+                            
+                            // Show preview with animation
+                            preview.classList.add('show');
+                            
+                            // Auto hide after 5 seconds
+                            setTimeout(closeCartPreview, 5000);
+                        }
+                        
+                        window.closeCartPreview = function() {
+                            const preview = document.getElementById('cartPreview');
+                            preview.classList.remove('show');
+                        }
+                    });
                     </script>
 
                     <div class="gift-section">
@@ -804,21 +1017,7 @@
                                     @if($related->discounted_price)
                                         <span class="product-tag">تخفيض</span>
                                     @endif
-                                    <!-- <div class="box-icon"><i class="fa-regular fa-heart"></i></div>
-                                    <div class="product-action">
-                                        <a href="#" class="add-to-wishlist" data-product-slug="{{ $related->slug }}">
-                                            <span class="action-text">أضف للمفضلة</span>
-                                            <span class="icon"><i class="fa-regular fa-heart"></i></span>
-                                        </a>
-                                        <a href="#" class="add-to-cart" data-product-slug="{{ $related->slug }}">
-                                            <span class="action-text">أضف للسلة</span>
-                                            <span class="icon"><i class="fa-light fa-bag-shopping"></i></span>
-                                        </a>
-                                        <a href="#" class="quick-view" data-product-slug="{{ $related->slug }}">
-                                            <span class="action-text">عرض سريع</span>
-                                            <span class="icon"><i class="fa-light fa-magnifying-glass"></i></span>
-                                        </a>
-                                    </div> -->
+
                                 </div>
                                 <div class="product-grid-content">
                                     <div class="woocommerce-product-rating">
@@ -853,6 +1052,7 @@
         </div>
     </div>
 </section>
+
 @endsection
 
 @push('scripts')

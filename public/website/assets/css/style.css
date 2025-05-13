@@ -2005,6 +2005,7 @@ textarea.is-invalid {
   left: 0;
   opacity: 1;
   visibility: visible;
+  margin-right: auto;
 }
 
 .th-menu-wrapper2 {
@@ -6848,9 +6849,10 @@ ol.wp-block-rss {
 .th-widget-about .about-logo:before {
   content: "";
   position: absolute;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   bottom: -35px;
-  width: 191.68px;
+  width: 200px;
   height: 24px;
   -webkit-mask-image: url("../img/theme-img/title-shape.svg");
           mask-image: url("../img/theme-img/title-shape.svg");
@@ -17752,7 +17754,7 @@ table.variations .label,
 
 .product-grid.style10 .box-img {
   overflow: visible;
-  width: 192px;
+  width: 169px;
   height: 192px;
   display: block;
   margin: auto;
@@ -23722,7 +23724,7 @@ span.select2-selection.select2-selection--single:focus {
 
 @media (max-width: 575px) {
   .about-image {
-    height: 400px;
+    /* height: 400px; */
   }
 }
 
@@ -27311,13 +27313,13 @@ span.select2-selection.select2-selection--single:focus {
 
 @media (max-width: 480px) {
   .choose-image {
-    margin-bottom: 200px;
+    margin-bottom: 0;
   }
 }
 
 @media (max-width: 375px) {
   .choose-image {
-    margin-bottom: 300px;
+    margin-bottom: 0;
   }
 }
 

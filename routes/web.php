@@ -32,9 +32,10 @@ Route::post('/contact/submit', [ContactController::class, 'submit'])->name('cont
 
 // Blog Routes
 Route::prefix('blogs')->name('blogs.')->group(function () {
-    Route::get('/', [BlogController::class, 'index'])->name('index');
-    Route::get('/search', [BlogController::class, 'search'])->name('search');
-    Route::get('/{slug}', [BlogController::class, 'show'])->name('show');
+    Route::get('/', [App\Http\Controllers\Website\BlogController::class, 'index'])->name('index');
+    Route::get('/search', [App\Http\Controllers\Website\BlogController::class, 'search'])->name('search');
+    Route::get('/{slug}', [App\Http\Controllers\Website\BlogController::class, 'show'])->name('show');
+    Route::post('/{blog}/comment', [App\Http\Controllers\Website\BlogController::class, 'storeComment'])->name('comment');
 });
 Route::get('cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('cart/add/{product}', [CartController::class, 'add'])->name('cart.add');

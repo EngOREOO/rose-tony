@@ -11,7 +11,10 @@ class HomeSetting extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = [
+        'about_features',
         'hero_subtitle',
+        'popular_products_subtitle',
+        'popular_products_title',
         'hero_title',
         'hero_description',
         'button_1_text',
@@ -38,13 +41,33 @@ class HomeSetting extends Model implements HasMedia
         'video_url',
         'testimonial_image',
         'newsletter_subtitle',
+        'about_subtitle',
+        'about_title',
+        'about_description',
+        'about_button_text',
+        'about_button_link',
+        'about_features',
+        'about_image',
         'newsletter_title',
         'newsletter_description',
+        'blogs_subtitle',
+        'blogs_title',
+        'hero_bg_3',
+        'blogs_button_text',
+        'faq_subtitle',
+        'faq_title',
+        'faq_button_text',
+        'faq_items',
+        'faq_form_subtitle',
+        'faq_form_title',
+        'faq_bg_image',
     ];
 
     protected $casts = [
         'feature_items' => 'array',
+        'about_features' => 'array',
         'review_count' => 'integer',
+        'faq_items' => 'array',
     ];
 
 //    protected static function booted(): void
@@ -75,6 +98,8 @@ class HomeSetting extends Model implements HasMedia
             ->singleFile();
         $this->addMediaCollection('hero_bg_2')
             ->singleFile();
+        $this->addMediaCollection('hero_bg_3')
+            ->singleFile();
 
         // Features Section Images
         $this->addMediaCollection('features_main_image')
@@ -83,18 +108,33 @@ class HomeSetting extends Model implements HasMedia
             ->singleFile();
         $this->addMediaCollection('features_shape_2')
             ->singleFile();
-        $this->addMediaCollection('feature_icons');
 
         // Video Section Image
         $this->addMediaCollection('video_bg')
             ->singleFile();
 
+        // About Section Images
+        $this->addMediaCollection('about_image')
+            ->singleFile();
+        $this->addMediaCollection('about_feature_icons');
+
         // Newsletter Section Images
         $this->addMediaCollection('newsletter_image')
             ->singleFile();
+        // Popular Products Section Images
+        $this->addMediaCollection('popular_products_bg')
+            ->singleFile();
+
 
         // Testimonial Images
         $this->addMediaCollection('testimonial_image')
             ->singleFile();
+            
+        // FAQ Section Images
+        $this->addMediaCollection('faq_bg')
+            ->singleFile();
+            
+        // About Section Icons
+        $this->addMediaCollection('about_feature_icons');
     }
 }

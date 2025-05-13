@@ -1,0 +1,79 @@
+/* Mobile Responsive Styles */
+@media (max-width: 767px) {
+    /* Center text in product section */
+    .product-area14 .title-area,
+    .product-area14 .product-grid-content {
+        text-align: center !important;
+    }
+
+    /* Center product titles */
+    .product-grid-content .box-title {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    /* Center price */
+    .product-grid-content .box-price {
+        display: block;
+        text-align: center;
+    }
+
+    /* Center rating */
+    .product-grid-content .woocommerce-product-rating {
+        justify-content: center;
+    }
+
+    /* Center buttons */
+    .product-grid-content .btn-group {
+        justify-content: center;
+    }
+
+    /* Center feature icons */
+    .feature-wrap .about-feature {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .feature-wrap .feature-icon {
+        margin: 0 auto;
+    }
+
+    /* Ensure section titles are centered */
+    .sec-title,
+    .sub-title {
+        text-align: center !important;
+        width: 100%;
+    }
+
+    /* Center all headings */
+    h1, h2, h3, h4, h5, h6,
+    .h1, .h2, .h3, .h4, .h5, .h6 {
+        text-align: center !important;
+    }
+
+    /* Add spacing between mobile elements */
+    .product-grid-content > * {
+        margin-bottom: 10px;
+    }
+
+    /* Hide white borders in testimonial section on mobile */
+    .testi-grid {
+        border-radius: 0 !important;
+        overflow: hidden;
+    }
+
+    /* Ensure testimonial images have no borders */
+    .testimonial-image {
+        border-radius: 0 !important;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+}
+
+/* Fix button alignment on all screens */
+.product-grid-content .btn-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}

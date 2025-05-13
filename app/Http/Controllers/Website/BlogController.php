@@ -4,58 +4,75 @@ namespace App\Http\Controllers\Website;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog;
+use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 
 class BlogController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = Blog::where('is_active', true)
-                    ->latest()
-                    ->paginate(6);
+        $query = Blog::query()->where('is_active', true);
+
+        // Category filter
+        if ($request->has('category')) {
+            $category = BlogCategory::where('slug', $request->category)->firstOrFail();
+            $query->where('category_id', $category->id);
+        }
+
+        // Search filter
+        if ($request->filled('query')) {
+            $searchTerm = $request->query('query');
+            $query->where(function($q) use ($searchTerm) {
+                $q->where('title', 'like', "%{$searchTerm}%")
+                  ->orWhere('content', 'like', "%{$searchTerm}%");
+            });
+        }
+
+        $blogs = $query->latest()->paginate(10);
         
-        $featuredBlogs = Blog::where('is_active', true)
-                            ->where('is_featured', true)
-                            ->latest()
-                            ->take(5)
-                            ->get();
+        // Get categories for sidebar
+        $categories = BlogCategory::withCount('blogs')->get();
         
-        return view('website.blogs', compact('blogs', 'featuredBlogs'));
+        // Get first blog for header image
+        $firstBlog = Blog::first();
+
+        return view('website.blogs', compact('blogs', 'firstBlog', 'categories'));
     }
 
     public function show($slug)
     {
         $blog = Blog::where('slug', $slug)
                     ->where('is_active', true)
+                    // ->with(['category', 'comments.replies'])
                     ->firstOrFail();
         
-        $relatedBlogs = Blog::where('id', '!=', $blog->id)
-                            ->where('is_active', true)
-                            ->latest()
-                            ->take(3)
-                            ->get();
+        $recentPosts = Blog::where('id', '!=', $blog->id)
+                    ->where('is_active', true)
+                    ->latest()
+                    ->take(3)
+                    ->get();
+
+        return view('website.blog-details', compact('blog', 'recentPosts'));
+    }
+
+    public function storeComment(Request $request, $slug)
+    {
+        $blog = Blog::where('slug', $slug)->firstOrFail();
         
-        $recentPosts = Blog::where('is_active', true)
-                          ->where('id', '!=', $blog->id)
-                          ->latest()
-                          ->take(3)
-                          ->get();
-        
-        return view('website.blog-details', compact('blog', 'relatedBlogs', 'recentPosts'));
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
+            'comment' => 'required|string',
+            'parent_id' => 'nullable|exists:blog_comments,id'
+        ]);
+
+        $blog->comments()->create($validated);
+
+        return back()->with('success', 'Comment added successfully!');
     }
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
-        
-        $blogs = Blog::where('is_active', true)
-                    ->where(function($q) use ($query) {
-                        $q->where('title', 'like', "%{$query}%")
-                          ->orWhere('content', 'like', "%{$query}%");
-                    })
-                    ->latest()
-                    ->paginate(6);
-        
-        return view('website.blogs', compact('blogs', 'query'));
+        return $this->index($request);
     }
 }

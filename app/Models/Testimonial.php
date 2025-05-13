@@ -26,6 +26,9 @@ class Testimonial extends Model implements HasMedia
         $this->addMediaCollection('testimonial_images')
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
 
+        $this->addMediaCollection('main_testimonial_image')
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/gif', 'image/webp']);
+
         $this->addMediaCollection('testimonial_videos')
             ->acceptsMimeTypes(['video/mp4', 'video/webm', 'video/ogg']);
     }

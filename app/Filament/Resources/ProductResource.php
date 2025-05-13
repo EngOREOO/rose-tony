@@ -33,12 +33,14 @@ class ProductResource extends Resource
                         ->label("اسم المنتج")
                         ->required()
                         ->maxLength(255),
-                        Forms\Components\Select::make("home_categories_id")
-                        ->label("التصنيف")
+                        Forms\Components\Select::make('home_category_id')
+                        ->label('التصنيف')
                         ->options(
-                            HomeCategory::pluck("name", "id")->toArray()
+                            HomeCategory::pluck('name', 'id')->toArray()
                         )
-                        ->searchable(),
+                        ->searchable()
+                        ->required(), // نخليه مطلوب
+
                     Forms\Components\TextInput::make("price")
                         ->label("السعر الأصلي")
                         ->required()

@@ -24,15 +24,16 @@ class FooterMenuItemResource extends Resource
             ->schema([
                 Forms\Components\Select::make('section')
                     ->options([
-                        'customer_service' => 'Customer Service',
-                        'orders_return' => 'Orders & Return',
+                        'customer_service' => 'روابط سريعة',
+                        'orders_return' => 'الاقسام',
+                        'best_sellers' => 'الأكثر مبيعا',
                     ])
-                    ->required(),
+                    ,
                 Forms\Components\TextInput::make('title')
-                    ->required()
+                    
                     ->maxLength(255),
                 Forms\Components\TextInput::make('url')
-                    ->required()
+                    
                     ->maxLength(255),
                 Forms\Components\TextInput::make('sort_order')
                     ->numeric()

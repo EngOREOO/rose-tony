@@ -140,6 +140,36 @@ class AboutUsResource extends Resource
             ->columns(1)
             ->collapsible(),
 
+            Forms\Components\Section::make('Counter Section')
+                ->description('Manage counter statistics shown on the about page')
+                ->schema([
+                    Forms\Components\Repeater::make('counters')
+                        ->label('Counter Items')
+                        ->schema([
+                            Forms\Components\Grid::make(3)
+                                ->schema([
+                                    Forms\Components\TextInput::make('number')
+                                        ->label('Number')
+                                        ->required()
+                                        ->numeric(),
+                                    Forms\Components\TextInput::make('suffix')
+                                        ->label('Suffix')
+                                        ->placeholder('e.g., k+, +, M')
+                                        ->required(),
+                                    Forms\Components\TextInput::make('text')
+                                        ->label('Description')
+                                        ->placeholder('e.g., Quality Products')
+                                        ->required(),
+                                ]),
+                        ])
+                        ->defaultItems(4)
+                        ->maxItems(4)
+                        ->createItemButtonLabel('Add Counter')
+                        ->columnSpanFull(),
+                ])
+                ->columns(1)
+                ->collapsible(),
+
             Forms\Components\Section::make('App Benefits')
                 ->description('List benefits of using your app or service')
                 ->schema([

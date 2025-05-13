@@ -27,17 +27,17 @@ class FooterSettingResource extends Resource
                         Forms\Components\SpatieMediaLibraryFileUpload::make('logo')
                             ->collection('logo')
                             ->image()
-                            ->required(),
+                            ,
                         Forms\Components\Textarea::make('about_text')
-                            ->required()
+                            
                             ->maxLength(500),
                         Forms\Components\TextInput::make('working_hours_weekday')
                             ->label('Weekday Working Hours')
-                            ->required()
+                            
                             ->placeholder('e.g. Mon-Fri: 8am - 9pm'),
                         Forms\Components\TextInput::make('working_hours_weekend')
                             ->label('Weekend Working Hours')
-                            ->required()
+                            
                             ->placeholder('e.g. Sat-Sun: 8am - 9pm'),
                     ])->columns(2),
 
@@ -61,33 +61,33 @@ class FooterSettingResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('phone')
                             ->tel()
-                            ->required(),
+                            ,
                         Forms\Components\TextInput::make('email')
                             ->email()
-                            ->required(),
+                            ,
                         Forms\Components\TextInput::make('address')
-                            ->required()
+                            
                             ->maxLength(255),
                     ])->columns(2),
 
-                Forms\Components\Section::make('App Store')
-                    ->schema([
-                        Forms\Components\TextInput::make('app_store_url')
-                            ->label('App Store URL')
-                            ->url()
-                            ->required(),
-                        Forms\Components\SpatieMediaLibraryFileUpload::make('app_store_image')
-                            ->collection('app_store_image')
-                            ->image()
-                            ->required(),
-                    ])->columns(2),
+                // Forms\Components\Section::make('App Store')
+                //     ->schema([
+                //         Forms\Components\TextInput::make('app_store_url')
+                //             ->label('App Store URL')
+                //             ->url()
+                //             ,
+                //         Forms\Components\SpatieMediaLibraryFileUpload::make('app_store_image')
+                //             ->collection('app_store_image')
+                //             ->image()
+                //             ,
+                //     ])->columns(2),
 
                 Forms\Components\Section::make('Payment Information')
                     ->schema([
                         Forms\Components\SpatieMediaLibraryFileUpload::make('payment_cards')
                             ->collection('payment_cards')
                             ->image()
-                            ->required(),
+                            ,
                     ]),
             ]);
     }

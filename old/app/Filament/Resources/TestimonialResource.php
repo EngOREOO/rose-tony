@@ -44,6 +44,7 @@ class TestimonialResource extends Resource
                 
                 Forms\Components\Section::make('Media')
                     ->schema([
+
                         SpatieMediaLibraryFileUpload::make('testimonial_images')
                             ->collection('testimonial_images')
                             ->multiple()
